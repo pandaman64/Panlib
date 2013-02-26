@@ -1,5 +1,5 @@
-#ifndef PANLIB_AlGORITHM_FILTER
-#define PANlIB_ALGORITHM_FILTER
+#ifndef PANLIB_ALGORITHM_TAKE_WHILE
+#define PANLIB_ALGORITHM_TAKE_WHILE
 
 #include <type_traits>
 
@@ -7,22 +7,20 @@ namespace panlib{
 namespace algorithm{
 
 template<typename Range,typename Pred>
-class Filter{
+struct TakeWhile{
 private:
 	Range range;
 	Pred pred;
-	
+	bool okay;
+
 public:
-	Filter(Range r,Pred p) : range(std::move(r)),pred(std::move(p)){
-		while(!range.empty() && !pred(range.front())){
-			range.pop_front();
-		}
+	TakeWhile(Range r,Pred p) : range(std::move(r)),pred(std::move(p)),okay(false){
+		okay = pred(range.front());
 	}
 
 	void pop_front(){
-		do{
-			range.pop_front();
-		}while(!range.empty() && !pred(range.front()));
+		range.pop_front();
+		okay = pred(range.front());
 	}
 
 	auto front()
@@ -31,11 +29,12 @@ public:
 	}
 
 	bool empty() const{
-		return range.empty();
+		return range.empty() || !okay;
 	}
 };
 
 } //namespace algorithm
 } //namespace panlib
+
 
 #endif

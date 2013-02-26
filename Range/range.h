@@ -17,6 +17,10 @@ namespace detail{
 	auto adl_begin(Seq &&seq)
 	->decltype(begin(seq));
 
+	template<typename T>
+	struct dereferenced_type{
+		typedef decltype(*std::declval<T>()) type;
+	};
 } //namespace detail
 
 template<typename Iterator>
@@ -25,7 +29,7 @@ private:
 	Iterator begin,end;
 
 public:
-	typedef decltype(*begin) value_type;
+	typedef typename detail::dereferenced_type<Iterator>::type value_type;
 
 	iterator_range(Iterator beg,Iterator end) : begin(beg),end(end){}
 
@@ -59,7 +63,7 @@ public:
 
 template<typename Iterator>
 struct input_iterator_range : iterator_range<Iterator>{
-	using base = iterator_range<Iterator>;
+	typedef iterator_range<Iterator> base;
 
 	input_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
 
@@ -70,7 +74,7 @@ struct input_iterator_range : iterator_range<Iterator>{
 
 template<typename Iterator>
 struct forward_iterator_range : iterator_range<Iterator>{
-	using base = iterator_range<Iterator>;
+	typedef iterator_range<Iterator> base;
 
 	forward_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
 
@@ -81,7 +85,7 @@ struct forward_iterator_range : iterator_range<Iterator>{
 
 template<typename Iterator>
 struct bidirectional_iterator_range : iterator_range<Iterator>{
-	using base = iterator_range<Iterator>;
+	typedef iterator_range<Iterator> base;
 
 	bidirectional_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
 
@@ -94,7 +98,7 @@ struct bidirectional_iterator_range : iterator_range<Iterator>{
 
 template<typename Iterator>
 struct random_access_iterator_range : iterator_range<Iterator>{
-	using base = iterator_range<Iterator>;
+	typedef iterator_range<Iterator> base;
 
 	random_access_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
 
@@ -127,10 +131,10 @@ struct choose_iterator_range<Iterator,std::random_access_iterator_tag>{
 
 template<typename Seq>
 auto all(Seq seq)
-	->typename choose_iterator_range<decltype(detail::adl_begin(seq))>::type{
-		using std::begin;
-		using std::end;
-		return { begin(seq),end(seq) };
+->typename choose_iterator_range<decltype(detail::adl_begin(seq))>::type{
+	using std::begin;
+	using std::end;
+	return { begin(seq),end(seq) };
 }
 
 } //namespace range

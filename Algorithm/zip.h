@@ -1,7 +1,9 @@
 #ifndef PANLIB_ALGORITHM_ZIP
 #define PANLIB_ALGORITHM_ZIP
 
+#include <type_traits>
 #include <tuple>
+
 #include "index_tuple.h"
 
 namespace panlib{
@@ -20,8 +22,9 @@ private:
 	}
 
 	template<std::size_t ...Indices>
-	auto front_impl(utility::index_tuple<Indices...>){
-		return std::forward_as_tuple(std::get<Indices>(ranges).front()...);
+	auto front_impl(utility::index_tuple<Indices...>)
+	->decltype(std::tuple<decltype(std::get<Indices>())...>(std::get<Indices>(ranges).front()...)){
+		return std::tuple<decltype(std::get<Indices>())...>(std::get<Indices>(ranges).front()...);
 	}
 
 	template<typename ...Args>

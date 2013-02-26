@@ -2,7 +2,7 @@
 #define PANLIB_ALGORITHM_TAKE
 
 #include <cassert>
-#include <utility>
+#include <type_traits>
 
 namespace panlib{
 namespace algorithm{

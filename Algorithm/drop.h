@@ -1,8 +1,11 @@
 #ifndef PANLIB_ALGORITHM_DROP
 #define PANLIB_ALGORITHM_DROP
 
-#include <utility>
+#include <type_traits>
 #include <cstddef>
+
+namespace panlib{
+namespace algorithm{
 
 template<typename Range>
 struct Drop{
@@ -30,5 +33,8 @@ public:
 		return range.empty();
 	}
 };
+
+} //namespace algorithm
+} //namespace panlib
 
 #endif

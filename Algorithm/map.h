@@ -1,6 +1,8 @@
 #ifndef PANLIB_ALGORITHM_MAP
 #define PANLIB_ALGORTIHM_MAP
 
+#include <type_traits>
+
 namespace panlib{
 namespace algorithm{
 
@@ -8,10 +10,10 @@ template<typename Range,typename Pred>
 class Map{
 private:
 	Range range;
-	Pred predicate;
+	Pred pred;
 	
 public:
-	Map(Range r,Pred p) : range(r),predicate(p){
+	Map(Range r,Pred p) : range(std::move(r)),pred(std::move(p)){
 	}
 
 	void pop_front(){
@@ -19,8 +21,8 @@ public:
 	}
 
 	auto front()
-	->decltype(predicate(range.front())){
-		return predicate(range.front());
+	->decltype(pred(range.front())){
+		return pred(range.front());
 	}
 
 	bool empty() const{

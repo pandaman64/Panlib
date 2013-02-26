@@ -1,19 +1,21 @@
 #ifndef PANLIB_ALGORITHM_UNIQUE
 #define PANLIB_ALGORITHM_UNIQUE
 
+#include <type_traits>
+
 #include "equal_to.h"
 
 namespace panlib{
 namespace algorithm{
 
-template<typename ForwardRange,typename Pred = panlib::algorithm::equal_to>
+template<typename ForwardRange,typename Pred>
 struct Unique{
 private:
 	ForwardRange range;
-	Pred pred
+	Pred pred;
 
 public:
-	Unique(Range r,Pred p = Pred()) : range(std::move(r)),pred(std::move(p)){
+	Unique(ForwardRange r,Pred p = Pred()) : range(std::move(r)),pred(std::move(p)){
 	}
 
 	void pop_front(){

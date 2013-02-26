@@ -33,10 +33,6 @@ public:
 
 typedef IotaBase<int> Iota;
 
-Iota iota(int b,int e = INT_MAX,int s = 1){
-	return Iota(b,e,s);
-}
-
 } //namespace algorithm
 } //namespace panlib
 

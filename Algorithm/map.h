@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_MAP
 #define PANLIB_ALGORTIHM_MAP
 
-#include <type_traits>
+#include <utility>
 
 namespace panlib{
 namespace algorithm{

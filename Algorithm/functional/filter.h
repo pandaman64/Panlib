@@ -1,7 +1,7 @@
 #ifndef PANLIB_AlGORITHM_FILTER_FUNCTIONAL
 #define PANlIB_ALGORITHM_FILTER_FUNCTIONAL
 
-#include <type_traits>
+#include <utility>
 
 #include "../filter.h"
 

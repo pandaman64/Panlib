@@ -2,9 +2,11 @@
 #define PANLIB_ALGORITHM_ZIP
 
 #include <type_traits>
+#include <utility>
 #include <tuple>
 
 #include "index_tuple.h"
+#include "tuple_util.h"
 
 namespace panlib{
 namespace algorithm{
@@ -12,49 +14,45 @@ namespace algorithm{
 template<typename ...Ranges>
 struct Zip{
 private:
-	typedef typename utility::make_index_tuple<0,sizeof...(Ranges)>::type indices_type;
+	typedef typename utility::make_index_tuple<0,sizeof...(Ranges) - 1>::type indices_type;
 
 	std::tuple<Ranges...> ranges;
 
-	template<std::size_t ...Indices>
-	void pop_front_impl(utility::index_tuple<Indices...>){
-		std::get<Indices>(ranges).pop_front()...;
-	}
-
-	template<std::size_t ...Indices>
-	auto front_impl(utility::index_tuple<Indices...>)
-	->decltype(std::tuple<decltype(std::get<Indices>())...>(std::get<Indices>(ranges).front()...)){
-		return std::tuple<decltype(std::get<Indices>())...>(std::get<Indices>(ranges).front()...);
-	}
-
-	template<typename ...Args>
-	bool _all(bool head,Args&& ...tail) const{
-		return head && _all(tail...);
-	}
-	bool _all(bool head,bool tail) const{
-		return head && tail;
-	}
-
-	template<std::size_t ...Indices>
-	bool empty_impl(utility::index_tuple<Indices...>) const{
-		return _all(std::get<Indices>(ranges).empty()...);
-	}
+	struct pop_front_{
+		template<typename T>
+		void operator ()(T &&range) const{
+			range.pop_front();
+		}
+	};
+	struct front_{
+		template<typename T>
+		auto operator ()(T &&range) const
+		->decltype(range.front()){
+			return range.front();
+		}
+	};
+	struct empty_{
+		template<typename T>
+		bool operator ()(T &&range) const{
+			return range.empty();
+		}
+	};
 
 public:
 	Zip(Ranges ...r) : ranges(std::move(r)...){
 	}
 
 	void pop_front(){
-		pop_front_impl();
+		utility::tuple::for_each(ranges,pop_front_());
 	}
 
 	auto front()
-	->decltype(front_impl()){
-		return front_impl();
+	->decltype(utility::tuple::transform(ranges,front_())){
+		return utility::tuple::transform(ranges,front_());
 	}
 
 	bool empty() const{
-		return empty_impl();
+		return utility::tuple::any(utility::tuple::transform(ranges,empty_()));
 	}
 };
 

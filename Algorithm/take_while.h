@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_TAKE_WHILE
 #define PANLIB_ALGORITHM_TAKE_WHILE
 
-#include <type_traits>
+#include <utility>
 
 namespace panlib{
 namespace algorithm{

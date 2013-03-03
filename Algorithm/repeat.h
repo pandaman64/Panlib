@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_REPEAT
 #define PANLIB_ALGORITHM_REPEAT
 
-#include <type_traits>
+#include <utility>
 
 
 namespace panlib{

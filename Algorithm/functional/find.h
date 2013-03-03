@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_FIND_FUNCTIONAL
 #define PANLIB_ALGORITHM_FIND_FUNCTIONAL
 
-#include <type_traits>
+#include <utility>
 
 #include "../find.h"
 

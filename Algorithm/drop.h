@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_DROP
 #define PANLIB_ALGORITHM_DROP
 
-#include <type_traits>
+#include <utility>
 #include <cstddef>
 
 namespace panlib{

@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_MAP_FUNCTIONAL
 #define PANLIB_ALGORTIHM_MAP_FUNCTIONAL
 
-#include <type_traits>
+#include <utility>
 
 #include "../map.h"
 

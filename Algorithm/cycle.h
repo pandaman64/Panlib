@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_CYCLE
 #define PANLIB_ALGORITHM_CYCLE
 
-#include <type_traits>
+#include <utility>
 #include <cassert>
 
 namespace panlib{

@@ -1,6 +1,8 @@
 #ifndef PANLIB_UTILITY_INDEX_TUPLE
 #define PANLIB_UTILITY_INDEX_TUPLE
 
+#include <cstddef>
+
 namespace panlib{
 namespace utility{
 

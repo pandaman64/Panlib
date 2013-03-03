@@ -2,7 +2,7 @@
 #define PANLIB_ALGORITHM_DROP_FUNCTIONAL
 
 #include <cstddef>
-#include <type_traits>
+#include <utility>
 
 #include "../drop.h"
 

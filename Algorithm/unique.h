@@ -1,7 +1,7 @@
 #ifndef PANLIB_ALGORITHM_UNIQUE
 #define PANLIB_ALGORITHM_UNIQUE
 
-#include <type_traits>
+#include <utility>
 
 #include "equal_to.h"
 

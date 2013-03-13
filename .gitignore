@@ -1,6 +1,11 @@
 *.h~
 *.cpp~
 .gitignore~
+Makefile~
+*.d
+*.o
+*.exe
+_exrc
 
 #################
 ## Eclipse

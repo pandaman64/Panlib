@@ -5,8 +5,10 @@
 #include <utility>
 #include <tuple>
 
-#include "index_tuple.h"
-#include "tuple_util.h"
+#include "../Tuple/index_tuple.h"
+#include "../Tuple/fold.h"
+#include "../Tuple/for_each.h"
+#include "../Tuple/transform.h"
 
 namespace panlib{
 namespace algorithm{
@@ -14,7 +16,7 @@ namespace algorithm{
 template<typename ...Ranges>
 struct Zip{
 private:
-	typedef typename utility::make_index_tuple<0,sizeof...(Ranges) - 1>::type indices_type;
+	typedef typename make_index_tuple<0,sizeof...(Ranges) - 1>::type indices_type;
 
 	std::tuple<Ranges...> ranges;
 
@@ -43,16 +45,16 @@ public:
 	}
 
 	void pop_front(){
-		utility::tuple::for_each(ranges,pop_front_());
+		tuple::for_each(ranges,pop_front_());
 	}
 
 	auto front()
-	->decltype(utility::tuple::transform(ranges,front_())){
-		return utility::tuple::transform(ranges,front_());
+	->decltype(tuple::transform(ranges,front_())){
+		return tuple::transform(ranges,front_());
 	}
 
 	bool empty() const{
-		return utility::tuple::any(utility::tuple::transform(ranges,empty_()));
+		return tuple::any(tuple::transform(ranges,empty_()));
 	}
 };
 

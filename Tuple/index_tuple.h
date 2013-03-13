@@ -4,7 +4,6 @@
 #include <cstddef>
 
 namespace panlib{
-namespace utility{
 
 template<std::size_t...>
 struct index_tuple{};
@@ -25,7 +24,6 @@ struct make_index_tuple<End,End>{
 	typedef index_tuple<End> type;
 };
 
-} //namespace utility
 } //namepsace panlib
 
 #endif

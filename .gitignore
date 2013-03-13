@@ -1,6 +1,6 @@
 *.h~
 *.cpp~
-.gitingore~
+.gitignore~
 
 #################
 ## Eclipse

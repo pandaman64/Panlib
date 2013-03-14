@@ -14,6 +14,9 @@
 #define UNARY_OP(name,op)\
 template<typename T>\
 struct default_context::eval<unary_operator::name<T>>{\
+	eval(){}\
+	template<typename U>\
+	eval(U&&){}\
 	auto operator ()(unary_operator::name<T> const& expr,default_context const& ctx)\
 	->decltype(op evaluate(value(expr),ctx)){\
 		return op evaluate(value(expr),ctx);\
@@ -22,6 +25,9 @@ struct default_context::eval<unary_operator::name<T>>{\
 #define UNARY_OP_POST(name,op)\
 template<typename T>\
 struct default_context::eval<unary_operator::name<T>>{\
+	eval(){}\
+	template<typename U>\
+	eval(U&&){}\
 	auto operator ()(unary_operator::name<T> const& expr,default_context const& ctx)\
 	->decltype(evaluate(value(expr),ctx) op){\
 		return evaluate(value(expr),ctx) op;\
@@ -30,6 +36,9 @@ struct default_context::eval<unary_operator::name<T>>{\
 #define BINARY_OP(name,op)\
 template<typename Left,typename Right>\
 struct default_context::eval<binary_operator::name<Left,Right>>{\
+	eval(){}\
+	template<typename U>\
+	eval(U&&){}\
 	auto operator ()(binary_operator::name<Left,Right> const& expr,default_context const& ctx)\
 	->decltype(evaluate(left(expr),ctx) op evaluate(right(expr),ctx)){\
 		return evaluate(left(expr),ctx) op evaluate(right(expr),ctx);\
@@ -96,6 +105,9 @@ BINARY_OP(member_pointer,->*); //binary ->*
 
 template<typename Left,typename Right>
 struct default_context::eval<subscription_operator::subscription<Left,Right>>{
+	eval(){}
+	template<typename U>
+	eval(U&&){}
 	auto operator ()(subscription_operator::subscription<Left,Right> const& expr,default_context const& ctx)
 	->decltype(evaluate(left(expr),ctx)[evaluate(right(expr),ctx)]){
 		return evaluate(left(expr),ctx)[evaluate(right(expr),ctx)];
@@ -103,6 +115,9 @@ struct default_context::eval<subscription_operator::subscription<Left,Right>>{
 };
 template<typename Callee,typename ...Args>
 struct default_context::eval<function_call::function<Callee,Args...>>{
+	eval(){}
+	template<typename U>
+	eval(U&&){}
 	using Expr = function_call::function<Callee,Args...>;
 
 	template<typename C,typename ...As>
@@ -125,6 +140,9 @@ struct default_context::eval<function_call::function<Callee,Args...>>{
 
 template<typename Left,typename Right>
 struct default_context::eval<binary_operator::comma<Left,Right>>{
+	eval(){}
+	template<typename U>
+	eval(U&&){}
 	auto operator ()(binary_operator::comma<Left,Right> const& expr,default_context const& ctx)
 	->decltype(evaluate(left(expr),ctx),evaluate(right(expr),ctx)){
 		return evaluate(left(expr),ctx),evaluate(right(expr),ctx);
@@ -133,6 +151,9 @@ struct default_context::eval<binary_operator::comma<Left,Right>>{
 
 template<typename T>
 struct default_context::eval<terminal<T>>{
+	eval(){}
+	template<typename U>
+	eval(U&&){}
 	T operator ()(terminal<T> const& expr,default_context const& ctx){
 		return evaluate(value(expr),ctx);
 	}

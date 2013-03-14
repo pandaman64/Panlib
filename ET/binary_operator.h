@@ -8,11 +8,13 @@
 #include <cstddef>
 
 #include "expression_base.h"
+#include "tag.h"
 
 #define BINARY_OP(name) \
 template<typename Left,typename Right>\
 struct name : binary_operator_base<name<Left,Right>,Left,Right>{\
 	using base = binary_operator_base<name,Left,Right>;\
+	using tag = tag::binary_operator::name;\
 	char const* expr_name = #name;\
 	template<typename L,typename R>\
 	name(L &&l,R &&r) : base(std::forward<L>(l),std::forward<R>(r)){\

@@ -9,8 +9,8 @@ namespace ET{
 namespace detail{
 	template<typename Expr,typename Context,typename std::enable_if<std::is_base_of<expression_root,Expr>{}>::type* = nullptr>
 	auto evaluate(Expr const& expr,Context const& context)
-	->decltype(typename Context::template eval<Expr>()(expr,context)){
-		return typename Context::template eval<Expr>()(expr,context);
+	->decltype(typename Context::template eval<Expr const>()(expr,context)){
+		return typename Context::template eval<Expr const>()(expr,context);
 	}
 	template<typename Expr,typename Context,typename std::enable_if<!std::is_base_of<expression_root,Expr>{}>::type* = nullptr>
 	Expr evaluate(Expr const& expr,Context const&){

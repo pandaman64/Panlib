@@ -4,6 +4,8 @@
 #include <tuple>
 #include <utility>
 
+#include "tag.h"
+
 namespace panlib{
 namespace ET{
 
@@ -15,6 +17,7 @@ namespace subscription_operator{
 	struct subscription : expression_base<subscription<Left,Right>>{
 		using tuple_type = std::tuple<Left&,Right&>;
 		using const_tuple_type = std::tuple<Left const&,Right const&>;
+		using tag = tag::binary_operator::subscription;
 
 		char const* expr_name = "subscription";
 

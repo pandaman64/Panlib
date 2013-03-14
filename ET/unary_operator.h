@@ -8,11 +8,13 @@
 #include <cstddef>
 
 #include "expression_base.h"
+#include "tag.h"
 
 #define UNARY_OP(name) \
 template<typename T>\
 struct name : unary_operator_base<name<T>,T>{\
 	using base = unary_operator_base<name,T>;\
+	using tag = tag::unary_operator::name;\
 	char const* expr_name = #name;\
 	template<typename U>\
 	name(U &&v) : base(std::forward<U>(v)){\

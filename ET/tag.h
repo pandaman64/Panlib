@@ -1,11 +1,6 @@
 #ifndef PANLIB_ET_TAG
 #define PANLIB_ET_TAG
 
-#include "unary_operator.h"
-#include "binary_operator.h"
-#include "subscription.h"
-#include "function_call.h"
-
 namespace panlib{
 namespace ET{
 

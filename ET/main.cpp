@@ -25,12 +25,11 @@ void print_type(T &&v){
 }
 
 struct negate_context : panlib::ET::callable_context<negate_context>{
-	using panlib::ET::callable_context<negate_context>::operator ();
 	template<typename Expr,typename Context>
-	auto operator ()(panlib::ET::tag::binary_operator::plus,Expr const& expr,Context const& ctx) const
-	->decltype(evaluate(left(expr),ctx) - evaluate(right(expr),ctx)){
-		std::cout << evaluate(left(expr),ctx) << ',' << evaluate(right(expr),ctx) << std::endl;
-		return evaluate(left(expr),ctx) - evaluate(right(expr),ctx);
+	auto operator ()(panlib::ET::tag::binary_operator::minus,Expr const& expr,Context const& ctx) const
+	->decltype(evaluate(left(expr),ctx) + evaluate(right(expr),ctx)){
+		print_type(expr);
+		return evaluate(left(expr),ctx) + evaluate(right(expr),ctx);
 	}
 };
 
@@ -44,10 +43,10 @@ int main(){
 	print_expr(expr);
 
 	default_context ctx;
-	std::cout << evaluate(lit(5)+6-2,ctx) << std::endl;
+	std::cout << evaluate(lit(5)-6+2,ctx) << std::endl;
 
 	negate_context nctx;
-	std::cout << evaluate(lit(5)+6-2,nctx) << std::endl;
+	std::cout << evaluate(lit(5)-6+2,nctx) << std::endl;
 	return 0;
 }
 

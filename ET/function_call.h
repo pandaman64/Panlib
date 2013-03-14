@@ -4,6 +4,8 @@
 #include <utility>
 #include <tuple>
 
+#include "tag.h"
+
 namespace panlib{
 namespace ET{
 
@@ -15,6 +17,7 @@ namespace function_call{
 	struct function : expression_base<function<Callee,Args...>>{
 		using tuple_type = std::tuple<Args&...>;
 		using const_tuple_type = std::tuple<Args const&...>;
+		using tag = tag::function_call::function;
 		
 		char const* expr_name = "function_call";
 

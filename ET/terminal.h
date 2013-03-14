@@ -16,6 +16,7 @@ namespace ET{
 	public:
 		using tuple_type = std::tuple<T&>;
 		using const_tuple_type = std::tuple<T const&>;
+		using tag = tag::terminal;
 
 		char const* expr_name = "terminal";
 

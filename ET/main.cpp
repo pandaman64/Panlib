@@ -1,6 +1,7 @@
 #include "expression.h"
 #include "io.h"
 #include "default_context.h"
+#include "callable_context.h"
 
 #include <iostream>
 #include <string>
@@ -23,6 +24,16 @@ void print_type(T &&v){
 	std::cout << demangle(typeid(type<T>).name()) << std::endl;
 }
 
+struct negate_context : panlib::ET::callable_context<negate_context>{
+	using panlib::ET::callable_context<negate_context>::operator ();
+	template<typename Expr,typename Context>
+	auto operator ()(panlib::ET::tag::binary_operator::plus,Expr const& expr,Context const& ctx) const
+	->decltype(evaluate(left(expr),ctx) - evaluate(right(expr),ctx)){
+		std::cout << evaluate(left(expr),ctx) << ',' << evaluate(right(expr),ctx) << std::endl;
+		return evaluate(left(expr),ctx) - evaluate(right(expr),ctx);
+	}
+};
+
 int main(){
 	using namespace panlib::ET;
 	using namespace panlib::ET::operators;
@@ -35,6 +46,8 @@ int main(){
 	default_context ctx;
 	std::cout << evaluate(lit(5)+6-2,ctx) << std::endl;
 
+	negate_context nctx;
+	std::cout << evaluate(lit(5)+6-2,nctx) << std::endl;
 	return 0;
 }
 

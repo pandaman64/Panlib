@@ -1,11 +1,15 @@
 #ifndef PANLIB_ET_DEFAULT_CONTEXT
 #define PANLIB_ET_DEFAULT_CONTEXT
 
+#include "../Tuple/index_tuple.h"
+#include "../Tuple/unpack_tuple.h"
+
 #include "evaluate.h"
 #include "unary_operator.h"
 #include "binary_operator.h"
 #include "subscription.h"
 #include "function_call.h"
+#include "terminal.h"
 
 #define UNARY_OP(name,op)\
 template<typename T>\
@@ -133,6 +137,10 @@ struct default_context::eval<terminal<T>>{
 		return evaluate(value(expr),ctx);
 	}
 };
+
+#undef UNARY_OP
+#undef UNARY_OP_POST
+#undef BINARY_OP
 
 } //namespace ET
 } //namespace panlib

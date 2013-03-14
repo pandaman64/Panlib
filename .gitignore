@@ -6,6 +6,7 @@ Makefile~
 *.o
 *.exe
 _exrc
+*.snippet
 
 #################
 ## Eclipse

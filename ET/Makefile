@@ -1,18 +1,17 @@
-CXXFLAGS += -std=c++11 -Wall
-CXXFLAGS += -MMD 
+CXXFLAGS=-std=c++11 -Wall -MMD
 
-OBJS = main.o
+OBJS=main.o
 
 main: $(OBJS)
-	cc -o main $(OBJS) -lstdc++
+	cc -o main main.o -lstdc++
 
 run: main
-	main.exe
+	./main.exe
 
 clean:
 	rm -f *.d
 	rm -f *.o
 	rm -f *.exe
 
--include *.d
+-include *.d 
 

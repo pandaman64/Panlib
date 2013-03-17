@@ -2,6 +2,7 @@
 #include "io.h"
 #include "default_context.h"
 #include "callable_context.h"
+#include "evaluate.h"
 
 #include <iostream>
 #include <string>

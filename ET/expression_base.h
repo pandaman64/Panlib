@@ -16,6 +16,7 @@ namespace ET{
 	};
 
 	struct expression_root{};
+
 	template<typename Derived>
 	struct expression_base : expression_root{
 		using term = typename terminal_type<Derived>::type;

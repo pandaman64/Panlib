@@ -44,12 +44,11 @@ namespace detail{
 	template<typename True,typename False>
 	struct if_<false,True,False> : False{};
 
-	template<typename Expr>
+	template<typename Expr,typename Tag,typename Context>
 	struct callable_eval{
-		template<typename Context>
 		auto operator ()(Expr const& expr,Context const& ctx)
-		->decltype(ctx(Expr::tag(),expr,ctx)){
-			return ctx(Expr::tag(),expr,ctx);
+		->decltype(ctx(Tag{},expr,ctx)){
+			return ctx(Tag{},expr,ctx);
 		}
 	};
 } //namespace detail
@@ -61,7 +60,7 @@ struct is_callable : decltype(detail::check_callable<Context,Expr>(0)){
 template<typename Context,typename DefaultContext = default_context>
 struct callable_context{
 	template<typename Expr>
-	struct eval : detail::if_<is_callable<Context,Expr>{},detail::callable_eval<Expr>,typename DefaultContext::template eval<Expr>>{
+	struct eval : detail::if_<is_callable<Context,Expr>{},detail::callable_eval<Expr,typename Expr::tag,Context>,typename DefaultContext::template eval<Expr,Context>>{
 	};
 
 	Context &as_context(){

@@ -12,9 +12,9 @@ template<typename Expr>
 using is_expr = std::is_base_of<expression_root,Expr>;
 
 template<typename Expr>
-using enable_if_expr = std::enable_if<is_expr<Expr>{}>;
+using enable_if_expr = std::enable_if<is_expr<typename std::remove_reference<Expr>::type>{}>;
 template<typename Expr>
-using disable_if_expr = std::enable_if<!is_expr<Expr>{}>;
+using disable_if_expr = std::enable_if<!is_expr<typename std::remove_reference<Expr>::type>{}>;
 
 } //namespace ET
 } //namespace panlib

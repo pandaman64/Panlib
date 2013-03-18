@@ -14,25 +14,25 @@
 #define UNARY_OP(name,op)\
 template<typename Expr,typename Context>\
 struct default_context_eval<Expr,Context,tag::unary_operator::name>{\
-	auto operator ()(Expr const& expr,Context const& ctx)\
-	->decltype(op evaluate(value(expr),ctx)){\
-		return op evaluate(value(expr),ctx);\
+	auto operator ()(Expr &&expr,Context &ctx)\
+	->decltype(op evaluate(value(std::forward<Expr>(expr)),ctx)){\
+		return op evaluate(value(std::forward<Expr>(expr)),ctx);\
 	}\
 }
 #define UNARY_OP_POST(name,op)\
 template<typename Expr,typename Context>\
 struct default_context_eval<Expr,Context,tag::unary_operator::name>{\
-	auto operator ()(Expr const& expr,Context const& ctx)\
-	->decltype(evaluate(value(expr),ctx) op){\
-		return evaluate(value(expr),ctx) op;\
+	auto operator ()(Expr &&expr,Context &ctx)\
+	->decltype(evaluate(value(std::forward<Expr>(expr)),ctx) op){\
+		return evaluate(value(std::forward<Expr>(expr)),ctx) op;\
 	}\
 }
 #define BINARY_OP(name,op)\
 template<typename Expr,typename Context>\
 struct default_context_eval<Expr,Context,tag::binary_operator::name>{\
-	auto operator ()(Expr const& expr,Context const& ctx)\
-	->decltype(evaluate(left(expr),ctx) op evaluate(right(expr),ctx)){\
-		return evaluate(left(expr),ctx) op evaluate(right(expr),ctx);\
+	auto operator ()(Expr &&expr,Context &ctx)\
+	->decltype(evaluate(left(std::forward<Expr>(expr)),ctx) op evaluate(right(std::forward<Expr>(expr)),ctx)){\
+		return evaluate(left(std::forward<Expr>(expr)),ctx) op evaluate(right(std::forward<Expr>(expr)),ctx);\
 	}\
 }
 
@@ -42,7 +42,7 @@ namespace ET{
 	struct default_context;
 
 namespace detail{
-	template<typename Expr,typename Context,typename Tag = typename Expr::tag>
+	template<typename Expr,typename Context,typename Tag = typename std::remove_reference<Expr>::type::tag>
 	struct default_context_eval{};
 
 	UNARY_OP(plus,+); //unary +
@@ -98,9 +98,9 @@ namespace detail{
 
 	template<typename Expr,typename Context>
 	struct default_context_eval<Expr,Context,tag::binary_operator::subscription>{
-		auto operator ()(Expr const& expr,Context const& ctx)
-		->decltype(evaluate(left(expr),ctx)[evaluate(right(expr),ctx)]){
-			return evaluate(left(expr),ctx)[evaluate(right(expr),ctx)];
+		auto operator ()(Expr &&expr,Context &ctx)
+		->decltype(evaluate(left(std::forward<Expr>(expr)),ctx)[evaluate(right(std::forward<Expr>(expr)),ctx)]){
+			return evaluate(left(std::forward<Expr>(expr)),ctx)[evaluate(right(std::forward<Expr>(expr)),ctx)];
 		}
 	};
 	template<typename Expr,typename Context>
@@ -112,30 +112,30 @@ namespace detail{
 		}
 
 		template<typename ...As,std::size_t ...Indices>
-		static auto unpack(std::tuple<As...> as,index_tuple<Indices...>,default_context const& ctx)
+		static auto unpack(std::tuple<As...> as,index_tuple<Indices...>,default_context &&ctx)
 		->decltype(call(evaluate(std::get<Indices>(as),ctx)...)){
 			return call(evaluate(std::get<Indices>(as),ctx)...);
 		}
 
-		auto operator ()(Expr const& expr,Context const& ctx)
-		->decltype(unpack(expr.as_tuple(),tuple::unpack_tuple<typename Expr::tuple_type>::index_tuple(),ctx)){
-			return unpack(expr.as_tuple(),tuple::unpack_tuple<typename Expr::tuple_type>::index_tuple(),ctx);
+		auto operator ()(Expr &&expr,Context &ctx)
+		->decltype(unpack(std::forward<Expr>(expr).as_tuple(),tuple::unpack_tuple<typename Expr::tuple_type>::index_tuple(),ctx)){
+			return unpack(std::forward<Expr>(expr).as_tuple(),tuple::unpack_tuple<typename Expr::tuple_type>::index_tuple(),ctx);
 		}
 	};
 
 	template<typename Expr,typename Context>
 	struct default_context_eval<Expr,Context,tag::binary_operator::comma>{
-		auto operator ()(Expr const& expr,Context const& ctx)
-		->decltype(evaluate(left(expr),ctx),evaluate(right(expr),ctx)){
-			return evaluate(left(expr),ctx),evaluate(right(expr),ctx);
+		auto operator ()(Expr &&expr,Context &ctx)
+		->decltype(evaluate(left(std::forward<Expr>(expr)),ctx),evaluate(right(std::forward<Expr>(expr)),ctx)){
+			return evaluate(left(std::forward<Expr>(expr)),ctx),evaluate(right(std::forward<Expr>(expr)),ctx);
 		}
 	};
 
 	template<typename Expr,typename Context>
 	struct default_context_eval<Expr,Context,tag::terminal>{
-		auto operator ()(Expr const& expr,Context const& ctx)
-		->decltype(value(expr)){
-			return value(expr);
+		auto operator ()(Expr &&expr,Context &ctx)
+		->decltype(value(std::forward<Expr>(expr))){
+			return value(std::forward<Expr>(expr));
 		}
 	};
 } //namespace detail

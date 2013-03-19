@@ -15,9 +15,9 @@ template<typename T>\
 struct name : unary_operator_base<name<T>,T>{\
 	using base = unary_operator_base<name,T>;\
 	using tag = tag::unary_operator::name;\
-	char const* expr_name = #name;\
+	char const* const expr_name = #name;\
 	template<typename U>\
-	name(U &&v) : base(std::forward<U>(v)){\
+	constexpr name(U &&v) : base(std::forward<U>(v)){\
 	}\
 }
 
@@ -34,7 +34,7 @@ namespace unary_operator{
 		using const_tuple_type = std::tuple<T const&>;
 
 		template<typename U>
-		unary_operator_base(U &&v) : value(std::forward<U>(v)){
+		constexpr unary_operator_base(U &&v) : value(std::forward<U>(v)){
 		}
 
 		tuple_type as_tuple(){

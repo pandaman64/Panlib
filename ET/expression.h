@@ -19,5 +19,7 @@
 
 #include "match.h"
 
+#include "extends.h"
+
 #endif
 

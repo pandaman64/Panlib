@@ -47,6 +47,10 @@ namespace calclator{
 	};
 }
 
+namespace lambda{
+	
+}
+
 int main(){
 	using namespace panlib::ET;
 	using namespace panlib::ET::operators;

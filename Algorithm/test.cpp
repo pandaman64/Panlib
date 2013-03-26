@@ -9,22 +9,6 @@
 #include <algorithm>
 #include <ctime>
 
-template<typename Range>
-void print_range(Range range){
-	if(range.empty()){
-		return;
-	}
-
-	std::cout << range.front();
-	range.pop_front();
-	while(!range.empty()){
-		std::cout << ',' << range.front();
-		range.pop_front();
-	}
-
-	std::cout << std::endl;
-}
-
 int main(){
 	using namespace panlib::range;
 	using namespace panlib::algorithm;

@@ -16,98 +16,86 @@ namespace detail{
 	template<typename Seq>
 	auto adl_begin(Seq &&seq)
 	->decltype(begin(seq));
-
-	template<typename T>
-	struct dereferenced_type{
-		typedef decltype(*std::declval<T>()) type;
-	};
 } //namespace detail
 
 template<typename Iterator>
 struct iterator_range{
-private:
+protected:
 	Iterator begin,end;
 
 public:
-	typedef typename detail::dereferenced_type<Iterator>::type value_type;
+	using value_type = typename std::remove_reference<decltype(*begin)>::type;
+	using reference = value_type&;
+	using const_reference = value_type const&;
 
 	iterator_range(Iterator beg,Iterator end) : begin(beg),end(end){}
-
-	void pop_front(){
-		assert(!empty());
-		++begin;
-	}
-	void pop_back(){
-		assert(!empty());
-		--end;
-	}
-
-	value_type front(){
-		assert(!empty());
-		return *begin;
-	}
-	value_type back(){
-		assert(!empty());
-		auto it = end;
-		--it;
-		return *it;
-	}
-	value_type at(std::size_t index){
-		return *(begin + index);
-	}
-
-	bool empty() const{
-		return begin == end;
-	}
 };
 
 template<typename Iterator>
 struct input_iterator_range : iterator_range<Iterator>{
-	typedef iterator_range<Iterator> base;
-
+	using base = iterator_range<Iterator>;
+	using typename base::value_type;
+	using typename base::reference;
+	using typename base::const_reference;
+	
 	input_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
 
-	using base::pop_front;
-	using base::front;
-	using base::empty;
+	void pop_front(){
+		assert(!this->empty());
+		++this->begin;
+	}
+	reference front(){
+		assert(!this->empty());
+		return *this->begin;
+	}
+	bool empty() const{
+		return this->begin == this->end;
+	}
 };
 
 template<typename Iterator>
-struct forward_iterator_range : iterator_range<Iterator>{
-	typedef iterator_range<Iterator> base;
+struct forward_iterator_range : input_iterator_range<Iterator>{
+	using base = input_iterator_range<Iterator>;
+	using typename base::value_type;
+	using typename base::reference;
+	using typename base::const_reference;
 
 	forward_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
-
-	using base::pop_front;
-	using base::front;
-	using base::empty;
 };
 
 template<typename Iterator>
-struct bidirectional_iterator_range : iterator_range<Iterator>{
-	typedef iterator_range<Iterator> base;
+struct bidirectional_iterator_range : forward_iterator_range<Iterator>{
+	using base = forward_iterator_range<Iterator>;
+	using typename base::value_type;
+	using typename base::reference;
+	using typename base::const_reference;
 
 	bidirectional_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
-
-	using base::pop_front;
-	using base::pop_back;
-	using base::front;
-	using base::back;
-	using base::empty;
+	
+	void pop_back(){
+		assert(!this->empty());
+		--this->end;
+	}
+	reference back(){
+		assert(!this->empty());
+		auto it = this->end;
+		--it;
+		return *it;
+	}
 };
 
 template<typename Iterator>
-struct random_access_iterator_range : iterator_range<Iterator>{
-	typedef iterator_range<Iterator> base;
+struct random_access_iterator_range : bidirectional_iterator_range<Iterator>{
+	using base = bidirectional_iterator_range<Iterator>;
+	using typename base::value_type;
+	using typename base::reference;
+	using typename base::const_reference;
 
 	random_access_iterator_range(Iterator beg,Iterator end) : base(beg,end){}
 
-	using base::pop_front;
-	using base::pop_back;
-	using base::front;
-	using base::back;
-	using base::at;
-	using base::empty;
+	reference at(std::size_t index){
+		return *(this->begin + index);
+	}
 };
 
 template<typename Iterator,typename Category = typename std::iterator_traits<Iterator>::iterator_category>
@@ -130,7 +118,7 @@ struct choose_iterator_range<Iterator,std::random_access_iterator_tag>{
 };
 
 template<typename Seq>
-auto all(Seq seq)
+auto all(Seq &&seq)
 ->typename choose_iterator_range<decltype(detail::adl_begin(seq))>::type{
 	using std::begin;
 	using std::end;
@@ -141,3 +129,4 @@ auto all(Seq seq)
 } //namespace panlib
 
 #endif
+

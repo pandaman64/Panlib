@@ -17,5 +17,9 @@
 
 #include "io.h"
 
+#include "match.h"
+
+#include "extends.h"
+
 #endif
 

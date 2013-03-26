@@ -1,6 +1,7 @@
 #include "expression.h"
 
 #include <tuple>
+#include <vector>
 
 #include "../Util/print_type.h"
 
@@ -22,6 +23,33 @@ struct subscription_context : panlib::ET::callable_context<subscription_context>
 		return _right < 0 ? _left[array_size + _right] : _left[_right];
 	}
 };
+
+namespace calclator{
+	template<std::size_t N>
+	struct arg : std::integral_constant<std::size_t,N>{
+		arg() = default;
+		~arg() = default;
+	};
+
+	namespace ET = panlib::ET;
+
+	ET::terminal<arg<1>> constexpr _1;
+	ET::terminal<arg<2>> constexpr _2;
+	ET::terminal<arg<3>> constexpr _3;
+
+	struct calclator_context : ET::callable_context<calclator_context>{
+		std::vector<double> arguments;
+		
+		template<std::size_t N,typename Context>
+		double &operator ()(ET::terminal<arg<N>> &arg,ET::tag::terminal,Context &ctx){
+			return arguments[N];
+		}
+	};
+}
+
+namespace lambda{
+	
+}
 
 int main(){
 	using namespace panlib::ET;
@@ -45,6 +73,13 @@ int main(){
 
 	null_context null_ctx;
 	print_type<decltype(evaluate(lit(1)+2+3+4+5,null_ctx))>();
+
+	using namespace calclator;
+	calclator_context cctx;
+	cctx.arguments.push_back(1);
+	cctx.arguments.push_back(2);
+	cctx.arguments.push_back(3);
+	std::cout << evaluate(_1 + _2 + _3,cctx) << std::endl;
 
 	return 0;
 }

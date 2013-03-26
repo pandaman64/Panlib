@@ -6,16 +6,16 @@
 #include "expression_base.h"
 
 #define UNARY_OP(op,name)\
-	template<typename T>\
-	unary_operator::name<T> operator op(T &&v){\
-		return { std::forward<T>(v) };\
-	}
+template<typename T>\
+unary_operator::name<T> operator op(T &&v){\
+	return { std::forward<T>(v) };\
+}
 
 #define BINARY_OP(op,name)\
-	template<typename Left,typename Right>\
-	binary_operator::name<Left,Right> operator op(Left &&left,Right &&right){\
-		return { std::forward<Left>(left),std::forward<Right>(right) };\
-	}
+template<typename Left,typename Right>\
+binary_operator::name<Left,Right> operator op(Left &&left,Right &&right){\
+	return { std::forward<Left>(left),std::forward<Right>(right) };\
+}
 
 namespace panlib{
 namespace ET{

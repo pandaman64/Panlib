@@ -19,13 +19,13 @@ namespace function_call{
 		using const_tuple_type = std::tuple<Args const&...>;
 		using tag = tag::function_call::function;
 		
-		char const* expr_name = "function_call";
+		char const* const expr_name = "function_call";
 
 		Callee callee;
 		std::tuple<Args...> arguments;
 		
 		template<typename T,typename ...As>
-		function(T && c,As &&...as) : callee(std::forward<T>(c)),arguments(std::forward<As>(as)...){
+		constexpr function(T && c,As &&...as) : callee(std::forward<T>(c)),arguments(std::forward<As>(as)...){
 		}
 
 		tuple_type as_tuple(){

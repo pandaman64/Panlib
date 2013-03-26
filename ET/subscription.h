@@ -19,13 +19,13 @@ namespace subscription_operator{
 		using const_tuple_type = std::tuple<Left const&,Right const&>;
 		using tag = tag::binary_operator::subscription;
 
-		char const* expr_name = "subscription";
+		char const* const expr_name = "subscription";
 
 		Left left;
 		Right right;
 
 		template<typename L,typename R>
-		subscription(L &&l,R &&r) : left(std::forward<L>(l)),right(std::forward<R>(r)){
+		constexpr subscription(L &&l,R &&r) : left(std::forward<L>(l)),right(std::forward<R>(r)){
 		}
 
 		tuple_type as_tuple(){

@@ -15,9 +15,9 @@ template<typename Left,typename Right>\
 struct name : binary_operator_base<name<Left,Right>,Left,Right>{\
 	using base = binary_operator_base<name,Left,Right>;\
 	using tag = tag::binary_operator::name;\
-	char const* expr_name = #name;\
+	char const* const expr_name = #name;\
 	template<typename L,typename R>\
-	name(L &&l,R &&r) : base(std::forward<L>(l),std::forward<R>(r)){\
+	constexpr name(L &&l,R &&r) : base(std::forward<L>(l),std::forward<R>(r)){\
 	}\
 }
 
@@ -35,7 +35,7 @@ namespace binary_operator{
 		using const_tuple_type = std::tuple<Left const&,Right const&>;
 
 		template<typename L,typename R>
-		binary_operator_base(L &&l,R &&r) : left(std::forward<L>(l)),right(std::forward<R>(r)){
+		constexpr binary_operator_base(L &&l,R &&r) : left(std::forward<L>(l)),right(std::forward<R>(r)){
 		}
 
 		tuple_type as_tuple(){

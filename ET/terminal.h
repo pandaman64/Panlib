@@ -18,10 +18,11 @@ namespace ET{
 		using const_tuple_type = std::tuple<T const&>;
 		using tag = tag::terminal;
 
-		char const* expr_name = "terminal";
+		char const* const expr_name = "terminal";
 
+		constexpr terminal() = default;
 		template<typename U>
-		terminal(U &&v) : value(std::forward<U>(v)){
+		constexpr terminal(U &&v) : value(std::forward<U>(v)){
 		}
 
 		tuple_type as_tuple(){

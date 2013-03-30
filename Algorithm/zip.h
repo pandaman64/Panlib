@@ -3,9 +3,9 @@
 
 #include <type_traits>
 #include <utility>
-#include <tuple>
 
 #include "../Tuple/index_tuple.h"
+#include "../Tuple/tuple.h"
 #include "../Tuple/fold.h"
 #include "../Tuple/for_each.h"
 #include "../Tuple/transform.h"
@@ -15,10 +15,8 @@ namespace algorithm{
 
 template<typename ...Ranges>
 struct Zip{
-private:
-	typedef typename make_index_tuple<0,sizeof...(Ranges) - 1>::type indices_type;
-
-	std::tuple<Ranges...> ranges;
+//private:
+	panlib::tuple::tuple<Ranges...> ranges;
 
 	struct pop_front_{
 		template<typename T>

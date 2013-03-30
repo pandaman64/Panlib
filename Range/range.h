@@ -18,8 +18,12 @@ namespace detail{
 	->decltype(begin(seq));
 } //namespace detail
 
-template<typename Iterator>
-struct iterator_range{
+namespace operators{
+	struct dummy_t{};
+}
+
+template<typename Iterator,typename Dummy = operators::dummy_t>
+struct iterator_range : operators::dummy_t{
 protected:
 	Iterator begin,end;
 

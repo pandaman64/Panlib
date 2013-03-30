@@ -2,6 +2,8 @@
 #include "io.h"
 #include "concept.h"
 #include "extends.h"
+#include "../Util/print_type.h"
+#include "istream_range.h"
 
 #include <vector>
 #include <list>
@@ -13,12 +15,16 @@ using namespace panlib::util;
 template<typename Range>
 struct negate_range : extends<Range,negate_range<Range>>{
 	using base = extends<Range,negate_range<Range>>;
+	using value_type = typename base::value_type;
+	
 	negate_range(Range r) : base(std::move(r)){
 	}
 	
-	template<typename T>
-	typename std::remove_reference<T>::type transform(T &&value){
-		return -value;
+	value_type front_(){
+		return -base::front_();
+	}
+	value_type back_(){
+		return -base::back_();
 	}
 };
 
@@ -34,7 +40,17 @@ int main(){
 	auto vv = all(v);
 	auto vr = make(all(v));
 
+	std::cout << vr.front() << vr.empty();
+
+	std::cout << vv << std::endl;
+	std::cout << vr << std::endl;
+
+	print_type(vv);
+	print_type(vr);
 	print_range(vv);
 	print_range(vr);
+
+	istream_range<int> range{std::cin};
+	print_range(range);
 }
 

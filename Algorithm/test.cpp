@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <ctime>
 
+#include "../Range/io.h"
+
 int main(){
 	using namespace panlib::range;
 	using namespace panlib::algorithm;

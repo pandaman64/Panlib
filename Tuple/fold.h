@@ -25,7 +25,8 @@ namespace detail{
 	}
 	template<typename Tuple,typename Acc,typename F,std::size_t ...Indices>
 	rem_ref<Acc> fold_unpack(F func,Acc &&acc,Tuple &&tuple,index_tuple<Indices...>){
-		return fold_impl(func,std::forward<Acc>(acc),std::get<Indices>(tuple)...);	
+		using std::get;
+		return fold_impl(func,std::forward<Acc>(acc),get<Indices>(tuple)...);	
 	}
 
 	struct _or{

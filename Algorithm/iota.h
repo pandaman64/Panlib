@@ -5,11 +5,13 @@
 #include <cassert>
 #include <cstddef>
 
+#include "../Range/range.h"
+
 namespace panlib{
 namespace algorithm{
 
 template<typename T>
-struct IotaBase{
+struct IotaBase : range::operators::dummy_t{
 private:
 	T value,end,step;
 

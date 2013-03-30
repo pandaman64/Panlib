@@ -3,12 +3,13 @@
 
 #include <utility>
 
+#include "../Range/range.h"
 
 namespace panlib{
 namespace algorithm{
 
 template<typename T>
-struct Repeat{
+struct Repeat : range::operators::dummy_t{
 private:
 	T value;
 

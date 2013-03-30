@@ -2,31 +2,31 @@
 #define PANLIB_ALGORTIHM_MAP
 
 #include <utility>
+#include <type_traits>
+
+#include "../Range/extends.h"
 
 namespace panlib{
 namespace algorithm{
 
 template<typename Range,typename Pred>
-class Map{
+struct Map : range::extends<Range,Map<Range,Pred>>{
+	using base = panlib::range::extends<Range,Map>;
+
 private:
-	Range range;
 	Pred pred;
-	
+
 public:
-	Map(Range r,Pred p) : range(std::move(r)),pred(std::move(p)){
+	Map(Range r,Pred p) : base(std::move(r)),pred(p){
 	}
 
-	void pop_front(){
-		range.pop_front();
+	auto front_()
+	->decltype(pred(this->base::front_())){
+		return pred(base::front_());
 	}
-
-	auto front()
-	->decltype(pred(range.front())){
-		return pred(range.front());
-	}
-
-	bool empty() const{
-		return range.empty();
+	auto back_()
+	->decltype(pred(this->base::back_())){
+		return pred(base::back_());
 	}
 };
 

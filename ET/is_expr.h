@@ -12,6 +12,7 @@ namespace ET{
 template<typename Expr>
 struct is_expr : std::is_base_of<expression_root,Expr>{
 };
+//Extention is an expression
 template<typename Expr,typename Derived,typename Domain>
 struct is_expr<extends<Expr,Derived,Domain>> : std::integral_constant<bool,true>{
 };

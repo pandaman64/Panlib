@@ -4,9 +4,9 @@
 namespace panlib{
 namespace ET{
 
-	template<template <typename...> class Expr,typename ...Args>
-	Expr<Args...> make_expr(Args &&...args){
-	}
+template<typename Expr,typename ...Args>
+Expr make_expr(Args &&...args){
+}
 
 } //namespace ET
 } //namespace panlib
